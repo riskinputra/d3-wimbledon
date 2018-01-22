@@ -23,7 +23,6 @@ let reload = () => {
 // redraw function
 let redraw = (data) => {
   // Your data to graph here
-  console.log(data)
   let goalScore = d3.max(data, function(d){return d.GoalsScored})
   // console.log(goalScore)
   let yScale = d3.scaleLinear()
@@ -31,7 +30,7 @@ let redraw = (data) => {
               .range([0, height-50])
   let xScale = d3.scaleLinear()
               .domain([0, data.length])
-              .range([0, width])
+              .range([0, width-30])
   let y = d3.scaleLinear()
         .domain([0, goalScore])
         .range([height-50, 0])
@@ -53,9 +52,10 @@ let redraw = (data) => {
     .data(data)
     .enter()
     .append('rect')
+      .transition(t)
       .attr('height', function(d,i){return yScale(d.GoalsScored)})
-      .attr('width','10')
-      .attr('x', function(d,i) {return i*width/(data.length)})
+      .attr('width', width/(data.length) - 3)
+      .attr('x', function(d,i) {return (i*width)/data.length})
       .attr('y', function(d,i) {return height - yScale(d.GoalsScored)})
       .attr('fill', function(d,i) {return colorScale(i)})
       .attr('transform', 'translate(31,-20)')
